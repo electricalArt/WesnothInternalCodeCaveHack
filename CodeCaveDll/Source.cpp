@@ -81,8 +81,10 @@ __declspec(naked) void CodeCave() {
     }
 }
 
-DWORD GetLocationForJmp(DWORD* lpDestinationLocation, DWORD* lpOpcodeLocation) {
-    return (DWORD)lpDestinationLocation - (DWORD)lpOpcodeLocation + 5;
+DWORD GetLocationBytesForJmp(DWORD* lpDestinationLocation, DWORD* lpOpcodeLocation) {
+    DWORD dwLocationBytesForJmp = (DWORD)lpDestinationLocation - (DWORD)lpOpcodeLocation + 5;
+    LOG(INFO) << "dwLocationBytesForJmp: " << dwLocationBytesForJmp;
+    return dwLocationBytesForJmp;
 }
 
 BOOL WINAPI DllMain(
@@ -109,8 +111,10 @@ BOOL WINAPI DllMain(
         }
 
         lpHookOpcode[0] = 0xE9;   //  `jmp` opcode
-        *(DWORD*)(lpHookOpcode + 1) = GetLocationForJmp((DWORD*)&CodeCave, (DWORD*)lpHookOpcode);   //  writes 4 bytes
+        *(DWORD*)(lpHookOpcode + 1) = GetLocationBytesForJmp((DWORD*)&CodeCave, (DWORD*)lpHookOpcode);   //  writes 4 bytes
         lpHookOpcode[5] = 0x90;   //  `nop` opcode
+
+        LOG(INFO) << "End";
     }
 
     return true;
