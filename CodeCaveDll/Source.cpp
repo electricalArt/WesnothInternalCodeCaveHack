@@ -68,7 +68,7 @@ __declspec(naked) void CodeCave() {
     pdwPlayerBase = (DWORD*)(0x017EED18);
     pdwGameBase = (DWORD*)(*pdwPlayerBase + 0xA90);
     pdwGold = (DWORD*)(*pdwGameBase + 0x4);
-    *pdwGold = 888;
+    *pdwGold = 9999;
 
     //  Restoring the registers. And performing those opcodes that were
     //  overwritten (with opcodes jumping to our code cave).
